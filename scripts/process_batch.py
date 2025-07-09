@@ -2,8 +2,11 @@
 import os
 import yaml  # 需要安装: pip install pyyaml
 import argparse
-from main_script import generate_notes, slugify
-from leetcode_fetcher import get_problem_map
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from scripts.process_single import generate_notes, slugify
+from src.lc_automator.fetcher import get_problem_map
 
 def batch_process_solutions(category: str):
     """

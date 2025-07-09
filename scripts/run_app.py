@@ -1,7 +1,9 @@
 # app.py
 import streamlit as st
 import os
-from main_script import generate_notes # 从我们强大的主脚本导入核心函数
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from scripts.process_single import generate_notes # 从我们强大的主脚本导入核心函数
 
 # --- UI 界面布局 ---
 st.set_page_config(page_title="LeetCode Note Generator", layout="centered")

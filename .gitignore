@@ -1,2 +1,15 @@
-**/*copy.py
-**/*org.py
+# .gitignore
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+*.egg-info/
+
+# Caches and Temporary Files
+a_problem_map.json
+temp_solutions/
+
+# OS-specific
+.DS_Store

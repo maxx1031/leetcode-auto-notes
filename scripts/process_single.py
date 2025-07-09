@@ -5,8 +5,8 @@ import re
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from leetcode_fetcher import get_leetcode_problem
-from prompt_template import create_prompt
+from src.lc_automator.fetcher import get_leetcode_problem
+from src.lc_automator.gpt import create_prompt
 
 # 加载环境变量
 load_dotenv()
