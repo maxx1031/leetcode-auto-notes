@@ -4,7 +4,8 @@ import argparse
 import re
 from dotenv import load_dotenv
 from openai import OpenAI
-
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.lc_automator.fetcher import get_leetcode_problem
 from src.lc_automator.gpt import create_prompt
 
