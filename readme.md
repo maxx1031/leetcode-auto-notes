@@ -21,7 +21,7 @@ Follow these steps to get the tool up and running.
 First, clone the repository and install the required Python packages.
 
 ```bash
-git clone <your-repository-url>
+git clone git@github.com:maxx1031/leetcode-auto-notes.git
 cd Auto-LeetCode-Notes
 pip install -r requirements.txt
 ```
@@ -103,3 +103,29 @@ The core of the AI-generated analysis lies in the prompt. You can customize it t
 - **`.env`**: Your local environment configuration (API keys, etc.). Not version controlled.
 
 By following this structure, you can easily manage your solutions and generated notes.
+
+## Automated Committing
+
+To help maintain a clean and conventional commit history, this project includes an interactive script `auto_commit.sh`.
+
+### How to Use
+
+1.  **Make the script executable (one-time setup):**
+    Before you can run the script, you need to give it execution permissions. You only need to do this once.
+
+    ```bash
+    chmod +x scripts/auto_commit.sh
+    ```
+
+2.  **Run the script:**
+    Whenever you want to commit your changes, run the script from the project's root directory.
+
+    ```bash
+    ./scripts/auto_commit.sh
+    ```
+
+The script will then guide you through an interactive process:
+- It will ask you to choose a **commit type** (like `feat`, `fix`, `docs`).
+- It will prompt you to enter a short **commit message**.
+
+After you confirm, it will automatically stage all changes, commit them with the formatted message, and push them to your remote repository.
