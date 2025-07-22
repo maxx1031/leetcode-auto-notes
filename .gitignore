@@ -13,3 +13,6 @@ temp_solutions/
 
 # OS-specific
 .DS_Store
+
+# specific files
+todo.markdown

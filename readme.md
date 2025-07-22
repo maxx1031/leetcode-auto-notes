@@ -1,125 +1,105 @@
-# 🤖 LeetCode Auto-Note Generator
+# Auto-LeetCode-Notes
 
-![Workflow Status](https://img.shields.io/badge/status-active-brightgreen)
-![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
+Auto-LeetCode-Notes is a Python-based automation tool designed to streamline the process of creating detailed, high-quality study notes for LeetCode problems. It fetches problem details from LeetCode, combines them with your Python solution, and leverages a GPT model to generate in-depth analysis and comparative notes in Markdown format.
 
-An automated pipeline to supercharge your LeetCode learning process. This tool fetches problem details, uses GPT-4o to generate in-depth, multi-solution analysis notes based on your code, and organizes everything neatly into category-based folders. It's designed to let you focus on what matters: **solving problems**.
+This tool helps you focus on solving problems while it handles the note-taking, ensuring you build a structured and professional personal knowledge base.
 
-The final generated notes are structured, professional, and follow a consistent template—perfect for knowledge consolidation and interview preparation.
+## Features
 
----
+- **Automated Note Generation**: Automatically creates detailed Markdown notes from your solution files.
+- **Batch Processing**: Process multiple solutions at once based on a simple `todo.yml` configuration file.
+- **GPT-Powered Analysis**: Uses AI to identify your approach, suggest alternative solutions, and provide a comprehensive analysis of time/space complexity.
+- **Customizable Prompts**: Easily tailor the GPT prompts to fit your specific learning style or requirements.
+- **Organized by Category**: Automatically organizes notes into subdirectories based on problem categories (e.g., `Two Pointers`, `Binary Tree`).
 
-## ✨ Features
+## Quick Start
 
-- **🧠 Intelligent Note Generation**: Provide just your solution code, and the tool uses GPT-4o to fill in all other analytical sections (Clarifying Questions, Complexity, Test Cases, Follow-ups, etc.).
-- **🚀 Multi-Solution Analysis**: Automatically generates analysis and code for alternative approaches (e.g., provides in-order and post-order solutions when you submit a pre-order one).
-- **📚 Category-Based Organization**: Manages your study plan through a simple `todo.yml` file. Notes are automatically saved into structured folders based on categories like `二叉树-BFS`.
-- **⚙️ Fully Automated Workflow**:
-    1. **Plan**: Edit a single `todo.yml` file to manage your to-do list.
-    2. **Code**: Write your solution in a simple `[problem_id].py` file.
-    3. **Generate**: Run a single command to batch-process all new solutions for a category.
-    4. **Commit**: Use a shell script to automatically commit and push your progress to GitHub.
-- **🌐 Smart Problem Fetching**: Automatically looks up problem details (like title, description) using just the problem ID, so you don't have to name your files with long slugs.
-- **💨 Efficient Caching**: Problem ID-to-slug mappings are cached locally to minimize API calls and speed up subsequent runs.
-- **🖥️ Optional UI**: Includes a simple web interface built with Streamlit for interactive, single-file processing.
+Follow these steps to get the tool up and running.
 
----
+### 1. Installation
 
-## 🛠️ Installation & Setup
-
-1. **Clone the Repository:**
-    ```bash
-    git clone <your-repository-url>
-    cd <your-repository-name>
-    ```
-
-2. **Install Dependencies:**
-    It is recommended to use a virtual environment.
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows, use venv\Scripts\activate
-    pip install -r requirements.txt
-    ```
-    *(You may need to create a `requirements.txt` file with `openai`, `python-dotenv`, `requests`, `pyyaml`, `streamlit`)*
-
-3. **Set Up Environment Variables:**
-    Create a file named `.env` in the root of the project and add your OpenAI API key:
-    ```
-    # .env
-    OPENAI_API_KEY=sk-YourSecretApiKeyHere
-    # Optional: If you use a proxy or a different base URL
-    # OPENAI_BASE_URL=https://your.proxy.url/v1
-    ```
-
-4. **Make Commit Script Executable:**
-    This step is required to run the automated commit script.
-    ```bash
-    chmod +x commit.sh
-    ```
-
----
-
-## 🚀 My Workflow
-
-This project is designed for a highly efficient daily workflow.
-
-### Step 1: Plan & Code
-
-1. **Update `todo.yml`:** Open the `todo.yml` file and add the LeetCode problem IDs you plan to solve under the appropriate category.
-    ```yaml
-    二叉树-BFS:
-      - 102
-      - 103
-      - 107 # Just finished this one
-    ```
-2. **Write Your Solution:** Create a new Python file in the `solutions/` directory named after the problem ID (e.g., `solutions/107.py`). Write your code inside.
-
-### Step 2: Generate Notes
-
-Run the batch processing script, specifying the category you worked on. The script will automatically find your new solution files, fetch problem data, generate notes, and skip any problems that are already done.
+First, clone the repository and install the required Python packages.
 
 ```bash
-python batch_process.py "二叉树-BFS"
+git clone <your-repository-url>
+cd Auto-LeetCode-Notes
+pip install -r requirements.txt
 ```
 
-The new Markdown notes will appear in the `notes/[category_name]/` directory.
+### 2. Configuration
 
-### Step 3: Commit and Push
+The tool requires an OpenAI API key to function.
 
-Once you're happy with the generated notes, run the commit script to save everything to your GitHub repository.
+1.  Create a file named `.env` in the root directory of the project.
+2.  Add your OpenAI API key to the `.env` file as shown below. You can also specify a custom base URL if you are using a proxy.
+
+    ```env
+    OPENAI_API_KEY="sk-your-key-here"
+    # Optional: If you use a proxy or a different API endpoint
+    # OPENAI_BASE_URL="https://api.example.com/v1"
+    ```
+
+## Usage
+
+The tool offers two primary modes of operation: processing a single solution or batch processing an entire category of solutions.
+
+### Processing a Single Solution
+
+To generate a note for a single LeetCode problem, use the `process_single.py` script. You need to provide the path to your solution file and optionally a category name.
+
+The script infers the LeetCode problem "slug" from the filename (e.g., `15-3sum.py` becomes `3sum`).
 
 ```bash
-./commit.sh
+python scripts/process_single.py solutions/15.py --category "Two Pointers"
 ```
 
-The script automatically creates a commit message with the current date and pushes all new files.
+### Batch Processing Solutions
 
----
+For batch processing, first define your problem lists in `todo.yml`. The keys represent categories (which will become folder names), and the values are lists of LeetCode problem IDs.
 
-## 🕹️ Alternative Usage
+**Example `todo.yml`:**
 
-### Single File Processing
-If you want to process just one file without using the todo.yml system, you can call `main_script.py` directly. The script will infer the problem slug from the filename.
+```yaml
+Two Pointers-Two Sum:
+  - 15
+  - 2824
+
+Binary Tree-BFS:
+  - 107
+  - 116
+  - 117
+```
+
+Once `todo.yml` is configured, run `process_batch.py` with the desired category name.
 
 ```bash
-# Filename must contain the slug, e.g., 102-binary-tree-level-order-traversal.py
-python main_script.py solutions/102-binary-tree-level-order-traversal.py --category "二叉树-BFS"
+python scripts/process_batch.py "Two Pointers-Two Sum"
 ```
 
-### Interactive UI (with Streamlit)
-For a user-friendly web interface, run the Streamlit app:
+The script will find all corresponding solution files in the `solutions/` directory (e.g., `15.py`, `2824.py`) and generate notes for them, skipping any that already exist.
 
-```bash
-streamlit run app.py
-```
+## Customization
 
-This will open a local web server where you can upload a solution file, specify a category, and generate a note with the click of a button.
+### How to Modify the GPT Prompt
 
----
+The core of the AI-generated analysis lies in the prompt. You can customize it to change the structure, tone, or content of the output.
 
-## 🔮 Future Improvements
-- **Error Handling:** Add more robust error handling for API failures and network issues.
-- **Custom Templates:** Allow users to select different note templates via a config file.
-- **Language Support:** Add a flag to generate notes in different languages (e.g., `--lang zh`).
-- **Dashboard:** Create a simple dashboard using the UI to visualize progress (e.g., problems solved per category).
+1.  **Locate the Prompt File**: The prompt is constructed in the `create_prompt` function within `src/lc_automator/gpt.py`.
+
+2.  **Edit the Prompt**: Open the file and modify the `prompt` string variable. You can change any part of the template, such as:
+    *   The introductory instructions for the AI.
+    *   The sections to be generated (e.g., adding a new "Pitfalls" section).
+    *   The format of the test cases or complexity analysis tables.
+
+**Example**: To change the tone to be more concise, you could modify the initial instruction from "You are a world-class algorithm expert..." to "Generate a brief technical summary...".
+
+### File and Directory Structure
+
+- **`solutions/`**: Place your raw Python solution files here. The filename should ideally be the problem ID (e.g., `2824.py`).
+- **`notes/`**: The generated Markdown notes are stored here. The tool creates subdirectories inside `notes/` based on the categories you provide.
+- **`src/lc_automator/`**: Contains the core logic for fetching data (`fetcher.py`) and interacting with GPT (`gpt.py`).
+- **`scripts/`**: Contains the executable scripts for single and batch processing.
+- **`todo.yml`**: The control file for batch processing.
+- **`.env`**: Your local environment configuration (API keys, etc.). Not version controlled.
+
+By following this structure, you can easily manage your solutions and generated notes.
